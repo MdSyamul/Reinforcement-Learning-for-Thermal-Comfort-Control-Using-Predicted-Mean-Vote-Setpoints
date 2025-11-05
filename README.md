@@ -5,33 +5,14 @@ This repository provides an implementation and demonstration of reinforcement le
 ## Table of Contents
 
 - [Overview](#overview)
-- [Features](#features)
 - [Getting Started](#getting-started)
-- [Repository Structure](#repository-structure)
 - [Requirements](#requirements)
-- [Usage](#usage)
-- [Results](#results)
-- [References](#references)
 - [License](#license)
 
 ---
 
 ## Overview
-
-Thermal comfort is a critical aspect of building environmental quality, impacting both occupant satisfaction and energy consumption. The Predicted Mean Vote (PMV) is a widely used metric to quantify thermal comfort based on environmental parameters and human factors.
-
-This repository demonstrates how reinforcement learning can be employed to:
-- Predict PMV using sensor data and contextual features.
-- Control HVAC setpoints in real-time to maintain target PMV values.
-- Balance occupant comfort against energy usage.
-
-## Features
-
-- PMV prediction model using sensor and contextual data
-- RL agent for HVAC control (e.g., DQN, PPO, or your choice)
-- Simulation environment for thermal comfort control
-- Data pre-processing and visualization tools
-- Scripts for training, evaluation, and benchmarking
+Fixed AC set temperatures cannot reliably maintain comfort over a time window, as other parameters influencing comfort vary over time, e.g., mean radiant temperature, activity level, etc. The solution is to set a desired comfort level (e.g., Predicted Mean Vote of 0) and regulate the AC set temperature to track that pre-set Predicted Mean Vote (PMV). To address this, this study presents a reinforcement learning-based control policy that maintains the Predicted Mean Vote (PMV) at the desired set value by suggesting the optimum AC set temperature. A Deep Neural Network-based PMV prediction model was employed as the training environment for the reinforcement learning agent. Two RL algorithms: One-Step Greedy Policy and Supervised Behavioral Cloning were used to train the control policy, where the state space comprised relative humidity, air velocity, metabolic rate, clothing insulation, season, climate, monthly air temperature, building types, and the action space is discrete air temperature. Both RL-based control policies effectively maintained the PMV within the range of [−0.3, +0.3] of the user-specified (set) PMV by adjusting the AC set temperature according to the recommendations made by the policies. These proposed policies will eliminate the need for manual adjustments of the AC set temperature, which people often forget to do, leading to energy waste. The result is better comfort and improved energy efficiency. 
 
 ## Getting Started
 
@@ -46,50 +27,11 @@ This repository demonstrates how reinforcement learning can be employed to:
    pip install -r requirements.txt
    ```
 
-3. **Configure environment:**
-   - Update configuration files as needed (see `config/` directory).
-   - Prepare your dataset or simulation parameters.
-
-## Repository Structure
-
-```
-├── data/                # Datasets and example input files
-├── models/              # Pretrained models and training scripts
-├── envs/                # Simulation environment for RL agent
-├── rl_agents/           # RL algorithm implementations
-├── utils/               # Utility scripts for preprocessing and visualization
-├── config/              # Configuration files
-├── results/             # Results, logs, figures
-├── requirements.txt     # Python dependencies
-└── README.md            # Project documentation
-```
-
 ## Requirements
 
-- Python 3.7+
-- NumPy, pandas, scikit-learn
-- TensorFlow or PyTorch (depending on RL agent)
-- matplotlib, seaborn (for visualization)
-- [Stable Baselines3](https://github.com/DLR-RM/stable-baselines3) or similar RL library (optional)
+- Python 3.10
 
 See `requirements.txt` for the full list.
-
-## Usage
-
-1. **Prepare Data:** Place your sensor and contextual data in the `data/` directory.
-2. **Train PMV Model:** Run the scripts in `models/` to train or load a PMV prediction model.
-3. **Configure RL Environment:** Set your simulation parameters in `config/`.
-4. **Train RL Agent:** Use scripts in `rl_agents/` to train a reinforcement learning agent for thermal comfort control.
-5. **Evaluate and Visualize:** Generate results and visualizations with scripts in `utils/`.
-
-Example command to train an RL agent:
-```bash
-python rl_agents/train_agent.py --config config/thermal_comfort.yaml
-```
-
-## Results
-
-Results from training and evaluation—including PMV prediction accuracy, comfort metrics, and energy consumption—can be found in the `results/` directory. Visualization scripts are also provided to plot performance curves and comfort profiles.
 
 ## License
 
